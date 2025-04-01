@@ -15,3 +15,12 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // Ignorar erros de origem cruzada
+    if (err.message.includes('Script error.')) {
+      return false;
+    }
+    // Continuar a lançar outros erros
+    return true;
+  });

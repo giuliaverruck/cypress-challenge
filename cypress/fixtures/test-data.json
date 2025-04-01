@@ -1,0 +1,22 @@
+{
+  "invalidFormData": {
+    "email": [
+      "invalid-email",
+      "another-invalid-email"
+    ],
+    "mobileNumber": [
+      "123",
+      "456"
+    ]
+  },
+  "validFormData": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "gender": "1",
+    "mobileNumber": "1234567890",
+    "subjects": "Math",
+    "picture": "demoPic.jpg",
+    "address": "123 Main St"
+  }
+}

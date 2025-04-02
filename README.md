@@ -1,8 +1,8 @@
-# DEMOQA Form Testing Project
+# DEMOQA Testing Project
 
 ## Overview
 
-Welcome to the DEMOQA Form Testing Project! This project focuses on ensuring the reliability and quality of the DEMOQA site’s form through comprehensive testing. Using Cypress for test automation, the project covers all aspects of form validation, data integrity, and usability.
+Welcome to the DEMOQA Testing Project! This project focuses on ensuring the reliability and quality of the DEMOQA site’s  through comprehensive testing. Using Cypress for test automation, the project covers all aspects of  validation, data integrity, and usability.
 
 You can find the test plan [here](https://docs.google.com/document/d/1OA9RWBxu1CnFRoKqBPUA8HGQDcl0tx-5qc0GuVLuH0s/edit?usp=sharing) 
 
@@ -22,9 +22,9 @@ Before running the tests locally, ensure that you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/demoqa-form-testing.git
+   git clone https://github.com/your-username/demoqa--testing.git
 
-   Navigate to the project directory:  ```bash  cd demoqa-form-testing   `
+   Navigate to the project directory:  ```bash  cd demoqa--testing   `
 
 Install the dependencies:
 
@@ -96,4 +96,4 @@ Support
 
 For questions, suggestions, or any kind of support, please contact us at giuliaverruck@gmail.com.
 
-Thank you for contributing to the quality of the DEMOQA site form! Happy testing!\`\`\`
+Thank you for contributing to the quality of the DEMOQA site ! Happy testing!\`\`\`

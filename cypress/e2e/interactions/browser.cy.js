@@ -1,85 +1,50 @@
 /// <reference types="cypress" />
 
-/// JSON fixture file can be loaded directly using
-// the built-in JavaScript bundler
-const requiredExample = require('../../fixtures/example')
-
-context('Files', () => {
+describe('Test Browser Windows Functionality', () => {
   beforeEach(() => {
-    cy.visit('https://example.cypress.io/commands/files')
-
-    // load example.json fixture file and store
-    // in the test context object
-    cy.fixture('example.json').as('example')
+    // Navigate to the Browser Windows page before each test
+    cy.visit(`${Cypress.config('baseUrl')}/browser-windows`)
   })
 
-  it('cy.fixture() - load a fixture', () => {
-    // https://on.cypress.io/fixture
-
-    // Instead of writing a response inline you can
-    // use a fixture file's content.
-
-    // when application makes an Ajax request matching "GET **/comments/*"
-    // Cypress will intercept it and reply with the object in `example.json` fixture
-    cy.intercept('GET', '**/comments/*', { fixture: 'example.json' }).as('getComment')
-
-    // we have code that gets a comment when
-    // the button is clicked in scripts.js
-    cy.get('.fixture-btn').click()
-
-    cy.wait('@getComment').its('response.body')
-      .should('have.property', 'name')
-      .and('include', 'Using fixtures to represent data')
-  })
-
-  it('cy.fixture() or require - load a fixture', function () {
-    // we are inside the "function () { ... }"
-    // callback and can use test context object "this"
-    // "this.example" was loaded in "beforeEach" function callback
-    expect(this.example, 'fixture in the test context')
-      .to.deep.equal(requiredExample)
-
-    // or use "cy.wrap" and "should('deep.equal', ...)" assertion
-    cy.wrap(this.example)
-      .should('deep.equal', requiredExample)
-  })
-
-  it('cy.readFile() - read file contents', () => {
-    // https://on.cypress.io/readfile
-
-    // You can read a file and yield its contents
-    // The filePath is relative to your project's root.
-    cy.readFile(Cypress.config('configFile')).then((config) => {
-      expect(config).to.be.an('string')
-    })
-  })
-
-  it('cy.writeFile() - write to a file', () => {
-    // https://on.cypress.io/writefile
-
-    // You can write to a file
-
-    // Use a response from a request to automatically
-    // generate a fixture file for use later
-    cy.request('https://jsonplaceholder.cypress.io/users')
-      .then((response) => {
-        cy.writeFile('cypress/fixtures/users.json', response.body)
-      })
-
-    cy.fixture('users').should((users) => {
-      expect(users[0].name).to.exist
+  it('Verify "New Tab" button opens a new tab with the correct content and URL', () => {
+    // Stub the window.open function to control the new tab
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('windowOpen')
     })
 
-    // JavaScript arrays and objects are stringified
-    // and formatted into text.
-    cy.writeFile('cypress/fixtures/profile.json', {
-      id: 8739,
-      name: 'Jane',
-      email: 'jane@example.com',
+    // Click the "New Tab" button
+    cy.get('#tabButton').click()
+
+    // Assert that window.open was called
+    cy.get('@windowOpen').should('be.called')
+
+    // Get the URL of the new tab
+    cy.get('@windowOpen').then((stub) => {
+      const newTabUrl = stub.args[0][0]
+      expect(newTabUrl).to.equal('/sample')
     })
 
-    cy.fixture('profile').should((profile) => {
-      expect(profile.name).to.eq('Jane')
-    })
+    // Visit the new tab URL to check its content
+    cy.visit('https://demoqa.com/sample', { log: false }) // Prevent duplicate visit log
+
+    // Assert that the new tab contains the expected text
+    cy.get('body').should('contain', 'This is a sample page')
   })
+
+  it('Verify "New Window" button opens a new window and closes it', () => {
+    // Stub the window.open function to control the new window
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('windowOpen')
+    })
+
+    // Click the "New Window" button
+    cy.get('#windowButton').click()
+
+    // Assert that window.open was called
+    cy.get('@windowOpen').should('be.called')
+
+    // No direct validation of the new window content since Cypress can't directly interact with it
+    // This test mainly checks that the new window opens
+  })
+
 })

@@ -50,7 +50,7 @@ describe('Test alerts Feature', () => {
   })
 
   it('Verify prompt Alert message is working properly', () => {
-    const promptText = 'Auntor'
+    const promptText = 'Giulia'
 
     // Stub the window:prompt to return the prompt text
     cy.window().then((win) => {

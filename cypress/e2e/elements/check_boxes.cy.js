@@ -1,118 +1,132 @@
 /// <reference types="cypress" />
 
-context('Cookies', () => {
-  beforeEach(() => {
-    Cypress.Cookies.debug(true)
+const filterTests = (definedTags, runTest) => {
+  if (Cypress.env('tags')) {
+    const tags = Cypress.env('tags').split('/')
+    const isFound = definedTags.some((definedTag) => tags.includes(definedTag))
 
-    cy.visit('https://example.cypress.io/commands/cookies')
+    if (isFound) {
+      runTest()
+    }
+  } else {
+    runTest()
+  }
+}
 
-    // clear cookies again after visiting to remove
-    // any 3rd party cookies picked up such as cloudflare
-    cy.clearCookies()
-  })
-
-  it('cy.getCookie() - get a browser cookie', () => {
-    // https://on.cypress.io/getcookie
-    cy.get('#getCookie .set-a-cookie').click()
-
-    // cy.getCookie() yields a cookie object
-    cy.getCookie('token').should('have.property', 'value', '123ABC')
-  })
-
-  it('cy.getCookies() - get browser cookies for the current domain', () => {
-    // https://on.cypress.io/getcookies
-    cy.getCookies().should('be.empty')
-
-    cy.get('#getCookies .set-a-cookie').click()
-
-    // cy.getCookies() yields an array of cookies
-    cy.getCookies().should('have.length', 1).should((cookies) => {
-      // each cookie has these properties
-      expect(cookies[0]).to.have.property('name', 'token')
-      expect(cookies[0]).to.have.property('value', '123ABC')
-      expect(cookies[0]).to.have.property('httpOnly', false)
-      expect(cookies[0]).to.have.property('secure', false)
-      expect(cookies[0]).to.have.property('domain')
-      expect(cookies[0]).to.have.property('path')
+filterTests(['all', 'ui', 'elements', 'check_boxes'], () => {
+  describe('DemoQA Check Boxes Page', () => {
+    beforeEach(() => {
+      // Navigate to the Check Boxes page before each test
+      cy.visit(`${Cypress.config('baseUrl')}/checkbox`)
     })
-  })
 
-  it('cy.getAllCookies() - get all browser cookies', () => {
-    // https://on.cypress.io/getallcookies
-    cy.getAllCookies().should('be.empty')
+    it('As a user, I should see the correct result text when the "Home" checkbox is selected', () => {
+      // Select the "Home" checkbox to select all checkboxes
+      cy.get('#tree-node-home').check({ force: true }).should('be.checked')
 
-    cy.setCookie('key', 'value')
-    cy.setCookie('key', 'value', { domain: '.example.com' })
-
-    // cy.getAllCookies() yields an array of cookies
-    cy.getAllCookies().should('have.length', 2).should((cookies) => {
-      // each cookie has these properties
-      expect(cookies[0]).to.have.property('name', 'key')
-      expect(cookies[0]).to.have.property('value', 'value')
-      expect(cookies[0]).to.have.property('httpOnly', false)
-      expect(cookies[0]).to.have.property('secure', false)
-      expect(cookies[0]).to.have.property('domain')
-      expect(cookies[0]).to.have.property('path')
-
-      expect(cookies[1]).to.have.property('name', 'key')
-      expect(cookies[1]).to.have.property('value', 'value')
-      expect(cookies[1]).to.have.property('httpOnly', false)
-      expect(cookies[1]).to.have.property('secure', false)
-      expect(cookies[1]).to.have.property('domain', '.example.com')
-      expect(cookies[1]).to.have.property('path')
+      // Validate that the result text displays all nested items
+      cy.get('#result')
+        .should('be.visible')
+        .within(() => {
+          const expectedText = [
+            'home',
+            'desktop',
+            'notes',
+            'commands',
+            'documents',
+            'workspace',
+            'react',
+            'angular',
+            'veu',
+            'office',
+            'public',
+            'private',
+            'classified',
+            'general',
+            'downloads',
+            'wordFile',
+            'excelFile',
+          ]
+          expectedText.forEach((item) => {
+            cy.get('.text-success').should('contain.text', item)
+          })
+        })
     })
-  })
 
-  it('cy.setCookie() - set a browser cookie', () => {
-    // https://on.cypress.io/setcookie
-    cy.getCookies().should('be.empty')
+    it('As a user, I should see no result text after deselecting all checkboxes', () => {
+      // Select and then deselect the "Home" checkbox to clear selections
+      cy.get('#tree-node-home').check({ force: true }).should('be.checked')
+      cy.get('#tree-node-home').uncheck({ force: true })
 
-    cy.setCookie('foo', 'bar')
+      // Validate there is no text in the results
+      cy.get('#result').should('not.exist')
+    })
 
-    // cy.getCookie() yields a cookie object
-    cy.getCookie('foo').should('have.property', 'value', 'bar')
-  })
+    it('As a user, I should see the correct result text when selecting only the "Desktop" checkbox', () => {
+      // Expand "Home" to reveal nested checkboxes
+      cy.get('[aria-label="Toggle"]').first().click()
 
-  it('cy.clearCookie() - clear a browser cookie', () => {
-    // https://on.cypress.io/clearcookie
-    cy.getCookie('token').should('be.null')
+      // Select the "Desktop" checkbox
+      cy.get('#tree-node-desktop').check({ force: true }).should('be.checked')
 
-    cy.get('#clearCookie .set-a-cookie').click()
+      // Validate that the result text displays only "desktop", "notes", and "commands"
+      cy.get('#result')
+        .should('be.visible')
+        .within(() => {
+          const expectedText = ['desktop', 'notes', 'commands']
+          expectedText.forEach((item) => {
+            cy.get('.text-success').should('contain.text', item)
+          })
+        })
+    })
 
-    cy.getCookie('token').should('have.property', 'value', '123ABC')
+    it('As a user, I should see the correct result text when selecting only the "Documents" checkbox', () => {
+      // Expand "Home" and then "Documents" to reveal nested checkboxes
+      cy.get('[aria-label="Toggle"]').first().click()
+      cy.get('[aria-label="Toggle"]').eq(1).click()
 
-    // cy.clearCookies() yields null
-    cy.clearCookie('token')
+      // Select the "Documents" checkbox
+      cy.get('#tree-node-documents').check({ force: true }).should('be.checked')
 
-    cy.getCookie('token').should('be.null')
-  })
+      // Validate that the result text displays "documents", "workspace", "react", "angular", "veu", "office", "public", "private", "classified", and "general"
+      cy.get('#result')
+        .should('be.visible')
+        .within(() => {
+          const expectedText = [
+            'documents',
+            'workspace',
+            'react',
+            'angular',
+            'veu',
+            'office',
+            'public',
+            'private',
+            'classified',
+            'general',
+          ]
+          expectedText.forEach((item) => {
+            cy.get('.text-success').should('contain.text', item)
+          })
+        })
+    })
 
-  it('cy.clearCookies() - clear browser cookies for the current domain', () => {
-    // https://on.cypress.io/clearcookies
-    cy.getCookies().should('be.empty')
+    it('As a user, I should see the correct result text when selecting only the "Downloads" checkbox', () => {
+      // Expand "Home" and then "Downloads" to reveal nested checkboxes
+      cy.get('[aria-label="Toggle"]').first().click()
+      cy.get('[aria-label="Toggle"]').eq(2).click()
 
-    cy.get('#clearCookies .set-a-cookie').click()
+      // Select the "Downloads" checkbox
+      cy.get('#tree-node-downloads').check({ force: true }).should('be.checked')
 
-    cy.getCookies().should('have.length', 1)
-
-    // cy.clearCookies() yields null
-    cy.clearCookies()
-
-    cy.getCookies().should('be.empty')
-  })
-
-  it('cy.clearAllCookies() - clear all browser cookies', () => {
-    // https://on.cypress.io/clearallcookies
-    cy.getAllCookies().should('be.empty')
-
-    cy.setCookie('key', 'value')
-    cy.setCookie('key', 'value', { domain: '.example.com' })
-
-    cy.getAllCookies().should('have.length', 2)
-
-    // cy.clearAllCookies() yields null
-    cy.clearAllCookies()
-
-    cy.getAllCookies().should('be.empty')
+      // Validate that the result text displays "downloads", "wordFile", and "excelFile"
+      cy.get('#result')
+        .should('be.visible')
+        .within(() => {
+          const expectedText = ['downloads', 'wordFile', 'excelFile']
+          expectedText.forEach((item) => {
+            cy.get('.text-success').should('contain.text', item)
+          })
+        })
+    })
   })
 })

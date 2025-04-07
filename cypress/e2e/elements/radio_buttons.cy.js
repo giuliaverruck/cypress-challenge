@@ -1,22 +1,27 @@
-describe('Radio Buttons', () => {
+/// <reference types="cypress"/>
+
+describe('Test Radio button Feature', () => {
   beforeEach(() => {
-    cy.visit('/radio-button'); // Substitua com o caminho correto
-  });
+    // Navigate to the Radio Button page before each test
+    cy.visit(`${Cypress.config('baseUrl')}/radio-button`)
+  })
 
-  it('should select the "Yes" radio button', () => {
-    cy.get('input[type="radio"][value="Yes"]').check({ force: true });
-    cy.get('input[type="radio"][value="Yes"]').should('be.checked');
-  });
+  it('Verify "No" Radio button is disabled', () => {
+    // Validate that the "No" radio button is disabled
+    cy.get('#noRadio').should('be.disabled')
+  })
 
-  it('should only allow one radio button to be selected at a time', () => {
-    cy.get('input[type="radio"][value="Yes"]').check({ force: true });
-    cy.get('input[type="radio"][value="Impressive"]').check({ force: true });
+  it('Verify "Yes" & "Impressive" Radio buttons can be checked and display correct text', () => {
+    // Check the "Yes" radio button
+    cy.get('#yesRadio').check({ force: true }).should('be.checked')
 
-    cy.get('input[type="radio"][value="Yes"]').should('not.be.checked');
-    cy.get('input[type="radio"][value="Impressive"]').should('be.checked');
-  });
+    // Validate that the success text contains 'Yes'
+    cy.get('.text-success').should('contain', 'Yes')
 
-  it('should verify the default state of radio buttons', () => {
-    cy.get('input[type="radio"][value="No"]').should('not.be.checked');
-  });
-});
+    // Check the "Impressive" radio button
+    cy.get('#impressiveRadio').check({ force: true }).should('be.checked')
+
+    // Validate that the success text contains 'Impressive'
+    cy.get('.text-success').should('contain', 'Impressive')
+  })
+})

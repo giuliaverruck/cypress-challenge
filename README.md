@@ -1,99 +1,127 @@
 # DEMOQA Testing Project
 
+Ensuring Quality Through Automation
+
+-----------------------------------------------------------
+
 ## Overview
 
-Welcome to the DEMOQA Testing Project! This project focuses on ensuring the reliability and quality of the DEMOQA site’s  through comprehensive testing. Using Cypress for test automation, the project covers all aspects of  validation, data integrity, and usability.
+Welcome to the DEMOQA Testing Project! This project focuses on ensuring the reliability and quality of the DEMOQA site through comprehensive testing.  Using Cypress for test automation, the project covers aspects of validation, data integrity, and usability.
 
-You can find the test plan [here](https://docs.google.com/document/d/1OA9RWBxu1CnFRoKqBPUA8HGQDcl0tx-5qc0GuVLuH0s/edit?usp=sharing) 
+**Project Status:** This is a living project! We are actively updating and expanding test cases. Automation scripts are under continuous development, and new scenarios are added regularly to enhance testing coverage. Contributions and feedback are always welcome!
 
-## Project Status
+**Test Plan:** You can find the test plan [here](https://docs.google.com/document/d/1OA9RWBxu1CnFRoKqBPUA8HGQDcl0tx-5qc0GuVLuH0s/edit?usp=sharing)
 
-This is a **living project**. We are actively working on updating and expanding test cases. Automation scripts are under continuous development, and new scenarios are added regularly to enhance the testing coverage. Contributions and feedback are always welcome!
+-----------------------------------------------------------
+
+## Technologies
+
+*   Automation Framework: Cypress
+*   Test Runner: Cypress Test Runner
+*   Language: JavaScript
+
+-----------------------------------------------------------
 
 ## Prerequisites
 
-Before running the tests locally, ensure that you have the following installed:
+Before running tests locally, ensure you have the following installed:
 
-- **Node.js & npm**: Make sure you have Node.js and npm installed. You can download them [here](https://nodejs.org/en/).
-- **Cypress**: This project utilizes Cypress for testing. If you haven't installed it yet, don’t worry; we'll cover this in the installation steps.
+*   **Node.js & npm:** Make sure you have Node.js and npm installed. You can download them [here](https://nodejs.org/en/).
+
+-----------------------------------------------------------
 
 ## Installation
 
-1. **Clone the repository:**
+1.  **Clone the repository:**
 
-   ```bash
-   git clone https://github.com/your-username/demoqa--testing.git
+    ```bash
+    git clone https://github.com/your-username/demoqa--testing.git
+    ```
+2.  **Navigate to the project directory:**
 
-   Navigate to the project directory:  ```bash  cd demoqa--testing   `
+    ```bash
+    cd cypress-challenge
+    ```
+3.  **Install the dependencies:**
 
-Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-This command installs Cypress along with other necessary packages.
+    This command installs Cypress along with other necessary packages.
 
-`   npm install   `
+4.  **Cypress setup:**
 
-Cypress setup:
+    If installing Cypress for the first time, or to ensure it's set up correctly, run:
 
-If installing Cypress for the first time, or to ensure it's set up correctly, run:
+    ```bash
+    npx cypress install
+    ```
 
-`   npx cypress install   `
+-----------------------------------------------------------
 
-Running Tests Locally
----------------------
+## Running Tests Locally
 
-Using Cypress GUI
+#### Using Cypress GUI
 
-Open Cypress Test Runner:
+1.  **Open Cypress Test Runner:**
 
-`   npx cypress open   `
+    ```bash
+    npx cypress open
+    ```
 
-This will open the Cypress Test Runner where you can manually select and run the test cases.
+    This will open the Cypress Test Runner where you can manually select and run test cases.
+2.  **Select a test file:**
 
-Select a test file:
+    In the Test Runner, you will see a list of available test files. Click on a test file to execute it.
 
-In the Test Runner, you will see a list of available test files. Click on a test file to execute it.
+#### Using Command Line
 
-Using Command Line
-------------------
+1.  **Run all tests:**
 
-Run all tests:
+    To execute all test cases without the GUI, use the following command:
 
-To execute all test cases without the GUI, use the following command:
+    ```bash
+    npx cypress run
+    ```
+2.  **Run a specific test file:**
 
-`   npx cypress run   `
+    You can also specify a single test file to run:
 
-Run a specific test file:
+    ```bash
+    npx cypress run --spec "cypress/integration/test-file.spec.js"
+    ```
 
-You can also specify a single test file to run:
+-----------------------------------------------------------
 
-`   npx cypress run --spec "cypress/integration/test-file.spec.js"   `
+## Project Contribution
 
-Project Contribution
---------------------
+We appreciate contributions to expand and improve the testing suite! To contribute:
 
-We appreciate contributions to expand and improve the testing suite. To contribute:
+1.  **Fork the repository.**
+2.  **Create a new branch** for your feature or bug fix:
 
-Fork the repository.
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+3.  **Make your changes** and commit them with clear messages.
+4.  **Push your feature branch:**
 
-Create a new branch for your feature or bug fix:
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+5.  **Submit a Pull Request** with a description of your changes.
 
-`   git checkout -b feature/your-feature-name   `
+-----------------------------------------------------------
 
-Make your changes and commit them with clear messages.
-
-Push your feature branch:
-`   git push origin feature/your-feature-name   `
-
-Submit a Pull Request with a description of your changes.
-
-Future Developments
--------------------
+## Future Developments
 
 We are continually enhancing our test coverage and encouraging suggestions for new test scenarios. Join us in maintaining the high quality of the DEMOQA site. Stay tuned for ongoing updates and improvements!
 
-Support
--------
+-----------------------------------------------------------
+
+## Support
 
 For questions, suggestions, or any kind of support, please contact us at giuliaverruck@gmail.com.
 
-Thank you for contributing to the quality of the DEMOQA site ! Happy testing!\`\`\`
+Thank you for contributing to the quality of the DEMOQA site! Happy testing!
